@@ -1,0 +1,397 @@
+{% extends "base.html" %} 
+{%block title%} <title>Zone List</title> {%endblock%}
+{% load static %}
+{%block css%} 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+
+<style>
+    /* body {
+        color: #566787;
+		background: #f5f5f5;
+		font-family: 'Varela Round', sans-serif;
+		font-size: 13px;
+	} */
+    .table-responsive {
+        margin: 30px 0;
+        text-align: center;
+    }
+	.table-wrapper {
+        min-width: 1000px;
+        background: #fff;
+        padding: 20px 25px;
+		border-radius: 3px;
+        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+	.table-title {
+		padding-bottom: 15px;
+		background: #299be4;
+		color: #fff;
+		padding: 16px 30px;
+		margin: -20px -25px 10px;
+		border-radius: 3px 3px 0 0;
+    }
+    .table-title h2 {
+		margin: 5px 0 0;
+		font-size: 24px;
+	}
+	.table-title .btn {
+		color: #566787;
+		float: right;
+		font-size: 13px;
+		background: #fff;
+		border: none;
+		min-width: 50px;
+		border-radius: 2px;
+		border: none;
+		outline: none !important;
+		margin-left: 10px;
+	}
+	.table-title .btn:hover, .table-title .btn:focus {
+        color: #566787;
+		background: #f2f2f2;
+	}
+	.table-title .btn i {
+		float: left;
+		font-size: 21px;
+		margin-right: 5px;
+	}
+	.table-title .btn span {
+		float: left;
+		margin-top: 2px;
+	}
+    table.table tr th, table.table tr td {
+        border-color: #e9e9e9;
+		padding: 12px 15px;
+		vertical-align: middle;
+    }
+	table.table tr th:first-child {
+		/* width: 60px; */
+	}
+	table.table tr th:last-child {
+		/* width: 100px; */
+	}
+    table.table-striped tbody tr:nth-of-type(odd) {
+    	background-color: #fcfcfc;
+	}
+	table.table-striped.table-hover tbody tr:hover {
+		background: #f5f5f5;
+	}
+    table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+    }	
+    table.table td:last-child i {
+		opacity: 0.9;
+		font-size: 22px;
+        margin: 0 5px;
+    }
+	table.table td a {
+		font-weight: bold;
+		color: #566787;
+		display: inline-block;
+		text-decoration: none;
+	}
+	table.table td a:hover {
+		color: #2196F3;
+	}
+	table.table td a.settings {
+        color: #2196F3;
+    }
+    table.table td a.delete {
+        color: #F44336;
+    }
+    table.table td i {
+        font-size: 19px;
+    }
+	table.table .avatar {
+		border-radius: 50%;
+		vertical-align: middle;
+		margin-right: 10px;
+	}
+	.status {
+		font-size: 30px;
+		margin: 2px 2px 0 0;
+		display: inline-block;
+		vertical-align: middle;
+		line-height: 10px;
+	}
+    .text-success {
+        color: #10c469;
+    }
+    .text-info {
+        color: #62c9e8;
+    }
+    .text-warning {
+        color: #FFC107;
+    }
+    .text-danger {
+        color: #ff5b5b;
+    }
+    .pagination {
+        float: right;
+        margin: 0 0 5px;
+    }
+    .pagination li a {
+        border: none;
+        font-size: 13px;
+        min-width: 30px;
+        min-height: 30px;
+        color: #999;
+        margin: 0 2px;
+        line-height: 30px;
+        border-radius: 2px !important;
+        text-align: center;
+        padding: 0 6px;
+    }
+    .pagination li a:hover {
+        color: #666;
+    }	
+    .pagination li.active a, .pagination li.active a.page-link {
+        background: #03A9F4;
+    }
+    .pagination li.active a:hover {        
+        background: #0397d6;
+    }
+	.pagination li.disabled i {
+        color: #ccc;
+    }
+    .pagination li i {
+        font-size: 16px;
+        padding-top: 6px
+    }
+    .hint-text {
+        float: left;
+        margin-top: 10px;
+        font-size: 13px;
+    }
+    @media (max-width: 1200px){
+        .container {
+            max-width: 100%;
+        }
+    }
+    .table-zone thead tr th{
+        font-weight: 700;
+    }
+    .table-zone tbody tr td a{
+        font-weight: 400;
+    }
+</style>
+{%endblock%}
+
+{%block heading%} ZONAL DASHBOARD {%endblock%}
+
+{%block start%}
+
+ <!-- user list  -->
+ <div class="container col-lg-12">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-xs-5">
+                        
+                        <h2>Zone List </h2>
+                    </div>
+                    <!-- <div class="col-xs-7">
+                        <a href="#" class="btn btn-primary"><i class="material-icons">&#xE147;</i> <span>Add New User</span></a>
+                        <a href="#" class="btn btn-primary"><i class="material-icons">&#xE24D;</i> <span>Export to Excel</span></a>						
+                    </div> -->
+                </div>
+            </div>
+            <table class="table table-zone table-striped table-hover" style="width: 100%;">
+                <thead >
+                    <tr>
+                        <!-- <th>#</th> -->
+                        <th>Zone No.</th>						
+                        <th>Zone Name</th>
+                        <th>Wards Under Zone</th>
+                        <th>Zone Officer</th>
+                        <th>Zone Officer Mobile No.</th>
+                        <th>Zone Address</th>
+                        <!-- <th>Action</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">01</a></td>
+                       <td><a href="{% url 'dashboard' %}">डॉ- हेडगेवार झोन</a></td>           
+                        <td><a href="{% url 'dashboard' %}">4,7,8,9,16</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री अवधेश जैन</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443412</a></td>
+                        <td><a href="{% url 'dashboard' %}">किला मैदान</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">02</a></td>
+                        <td><a href="{% url 'dashboard' %}">लाल बहादुर शास्त्री झोन</a></td>          
+                        <td><a href="{% url 'dashboard' %}">6,67,68,69,70</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री धीरेन्द्र बायस</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443540</a></td>
+                        <td><a href="{% url 'dashboard' %}">राजमोहल्ला</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">03</a></td>
+                        <td><a href="{% url 'dashboard' %}">शहीद भगतसिंह झोन</a></td>        
+                        <td><a href="{% url 'dashboard' %}">56,57,58</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री बंसत गोगड़े</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440442232</a></td>
+                        <td><a href="{% url 'dashboard' %}">नगर निगम</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">04</a></td>
+                        <td><a href="{% url 'dashboard' %}">महाराणा प्रताप झोन</a></td>           
+                        <td><a href="{% url 'dashboard' %}">10,11,12,13,17</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री विवेश जैन</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443401</a></td>
+                        <td><a href="{% url 'dashboard' %}">संगम नगर</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">05</a></td>
+                        <td><a href="{% url 'dashboard' %}">चंद्रगुप्त मौर्य झोन</a></td>       
+                        <td><a href="{% url 'dashboard' %}">21,22,28,33</a></td>
+                        <td><a href="{% url 'dashboard' %}">सुधीर गुलवे</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443416</a></td>
+                        <td><a href="{% url 'dashboard' %}">सुखलिया</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">06</a></td>
+                        <td><a href="{% url 'dashboard' %}">सुभाषचंद बोस झोन</a></td>           
+                        <td><a href="{% url 'dashboard' %}">24,25,26,27</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री उमेश पाटीदार</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443533</a></td>
+                        <td><a href="{% url 'dashboard' %}">सुभाष नगर</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">07</a></td>
+                        <td><a href="{% url 'dashboard' %}">अटलबिहारी वाजपेयी झोन</a></td>          
+                        <td><a href="{% url 'dashboard' %}">29,31,32,34</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री शांतीलाल यादव</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443332</a></td>
+                        <td><a href="{% url 'dashboard' %}">स्कीम नंबर 54</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">08</a></td>
+                        <td><a href="{% url 'dashboard' %}">चंद्रशेखर आजाद झोन</a></td>          
+                        <td><a href="{% url 'dashboard' %}">30,35,36,37</a></td>
+                        <td><a href="{% url 'dashboard' %}">सुश्री परागी गोयल</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440410074</a></td>
+                        <td><a href="{% url 'dashboard' %}">विजय नगर</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">09</a></td>
+                        <td><a href="{% url 'dashboard' %}">डॉ भीमराव अम्बेडकर झोन</a></td>         
+                        <td><a href="{% url 'dashboard' %}">44,45,46,47</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री जी.डी. सुतार</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443345</a></td>
+                        <td><a href="{% url 'dashboard' %}">पंचम की फेल</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">10</a></td>
+                        <td><a href="{% url 'dashboard' %}">डॉ श्यामप्रसाद मुखर्जी झोन</a></td>          
+                        <td><a href="{% url 'dashboard' %}">38,39,40,42,43</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री भास्कर मोयदे</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443409</a></td>
+                        <td><a href="{% url 'dashboard' %}">साकेत नगर</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">11</a></td>
+                        <td><a href="{% url 'dashboard' %}">राजमाता सिंधिया झोन</a></td>         
+                        <td><a href="{% url 'dashboard' %}">48,49,54,55,60</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री नागेन्द्र सिंह भदौरिया</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443343</a></td>
+                        <td><a href="{% url 'dashboard' %}">नेहरू स्टेडियम</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">12</a></td>
+                        <td><a href="{% url 'dashboard' %}">मॉ हरसिद्धी झोन</a></td>           
+                        <td><a href="{% url 'dashboard' %}">59,61,62,65,66</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री मनोज जैन</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443404</a></td>
+                        <td><a href="{% url 'dashboard' %}">हरसिद्धी</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">13</a></td>
+                        <td><a href="{% url 'dashboard' %}">पंडित दिनदयाल उपाध्याय झोन</a></td>           
+                        <td><a href="{% url 'dashboard' %}">74,77,78,80,81</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री गितेश तिवारी</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440440783</a></td>
+                        <td><a href="{% url 'dashboard' %}">बिलावली</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">14</a></td>
+                        <td><a href="{% url 'dashboard' %}">राजेन्द्र धारकर झोन</a></td>          
+                        <td><a href="{% url 'dashboard' %}">79,82,84,85</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री सतीश गुप्ता</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443355</a></td>
+                        <td><a href="{% url 'dashboard' %}">हवा बंगला</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">15</a></td>
+                        <td><a href="{% url 'dashboard' %}">लक्ष्मणसिंह गौड़ झोन</a></td>          
+                        <td><a href="{% url 'dashboard' %}">2,71,72,73,83</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री नदीम खान</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443358</a></td>
+                        <td><a href="{% url 'dashboard' %}">द्रविड़ नगर</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">16</a></td>
+                        <td><a href="{% url 'dashboard' %}">कुशाभाऊ ठाकरे झोन</a></td>          
+                        <td><a href="{% url 'dashboard' %}">1,3,5,14,15</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री जितेन्द्र जमींदार</a></td>
+                        <td><a href="{% url 'dashboard' %}">9425065552</a></td>
+                        <td><a href="{% url 'dashboard' %}">एरोड्रम रोड़</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">17</a></td>
+                        <td><a href="{% url 'dashboard' %}">महात्मा गांधी झोन</a></td>           
+                        <td><a href="{% url 'dashboard' %}">18,19,20,23</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री नरेन्द्र कुरील</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443350</a></td>
+                        <td><a href="{% url 'dashboard' %}">नरवल</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">18</a></td>
+                        <td><a href="{% url 'dashboard' %}">छत्रपति शिवाजी झोन</a></td>          
+                        <td><a href="{% url 'dashboard' %}">51,52,53,63,64</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री अतीक खान</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443532</a></td>
+                        <td><a href="{% url 'dashboard' %}">कृषि विहार</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'dashboard' %}">19</a></td>
+                        <td><a href="{% url 'dashboard' %}">सरदार वल्लभ भाई पटेल झोन</a></td>           
+                        <td><a href="{% url 'dashboard' %}">41,50,75,76</a></td>
+                        <td><a href="{% url 'dashboard' %}">श्री वैभव देवलासे</a></td>
+                        <td><a href="{% url 'dashboard' %}">7440443304</a></td>
+                        <td><a href="{% url 'dashboard' %}">स्कीम नंबर 94</a></td>
+                    </tr>
+
+
+                    
+                    
+                </tbody>
+            </table>
+            <!-- <div class="clearfix">
+                <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+                <ul class="pagination">
+                    <li class="page-item disabled"><a href="#">Previous</a></li>
+                    <li class="page-item"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item"><a href="#" class="page-link">4</a></li>
+                    <li class="page-item"><a href="#" class="page-link">5</a></li>
+                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                </ul>
+            </div> -->
+        </div>
+    </div>        
+</div>  
+  <!-- user list ends  -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  {%endblock%}

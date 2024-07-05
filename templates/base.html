@@ -23,7 +23,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.min.js"></script>
 
-    <title>Dashboard</title>
+    {%block title%}{%endblock%}
   </head>
 
   <!-- trying -->
@@ -44,6 +44,17 @@
     pointer-events: none;
     color: #aaa;
 }
+
+.navbar-nav .nav-item .nav-link {
+    /* color: white; */
+    color: #d4e0dc;    ;
+}
+.navbar-nav .nav-item.active .nav-link,
+.navbar-nav .nav-item:hover .nav-link {
+    /* color: #00ffad; */
+    color: white;
+}
+
   </style>
   {%block css%} {%endblock%}
   
@@ -55,7 +66,7 @@
 
   <body style="background-color: #f5f7fa">
     <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-5"> -->
-    <nav class="navbar navbar-expand-lg navbar-dark px-5" style="background-color: black;">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark px-5" style="background-color: #1f6139;">
       
       <!-- <a class="navbar-brand" href="#">Ecovators</a> -->
       <button
@@ -70,21 +81,24 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse mx-4 " id="navbarSupportedContent">
-        <img src="/media/wwf-logo-white.png"  style="height: 50px; " alt="">
-        <ul class="navbar-nav px-5 mr-auto ">
-          <li class="nav-item active ">
-            <a class="nav-link" href="{% url 'dashboard' %}"
+      <div class="collapse navbar-collapse mx-4 " id="navbarSupportedContent" >
+        <!-- <img src="/media/wwf-logo-white.png"  style="height: 50px; " alt=""> -->
+        <!-- <img src="/media/wwf-logo.png"  style="height: 60px;" alt=""> -->
+        <img src="/media/wwf.jpg "  style="height: 60px;" alt="">
+        <!-- <img src="/media/Picture1.png"  style="height: 50px; " alt=""><div style="color: white;">Ecovators</div> -->
+        <ul class="navbar-nav px-3 mr-auto " style="font-size: 1.1rem;">
+          <li class="nav-item active " >
+            <a class="nav-link" href="{% url 'home' %}"
               >Home <span class="sr-only">(current)</span></a
             >
           </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="{% url 'dashboard' %}"
+          <li class="nav-item " >
+            <a class="nav-link"  href="{% url 'dashboard' %}"
               >Dashboard <span class="sr-only"></span></a
             >
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href=""
+            <a class="nav-link" href="{%url 'zone-list'%}"
               >Zones <span class="sr-only"></span></a
             >
           </li>
@@ -96,7 +110,14 @@
           
         </ul>
 
-        <ul class="navbar-nav  " style="margin-right: 15vw;">
+        <div class="navbar-nav mr-auto" style="
+        font-size: xxx-large;
+        color: white;
+        letter-spacing: 6px;
+        font-weight: bold;
+    "> ECOVATORS</div>
+<!-- search box -->
+        <!-- <ul class="navbar-nav  " style="margin-right: 15vw;">
           <form class="form-inline my-2 my-lg-0">
             <div class="form-group has-search">
               <span class="form-control-feedback"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-search" viewBox="0 0 15 15">
@@ -105,16 +126,17 @@
               <input type="text" class="form-control" style="
               border-radius: 30px;" placeholder="Search">
             </div>
-           
-            <!-- <p style="color: #f5f7fa;">{{request.user}}</p>   -->
+          
           </form>
-        </ul>
+        </ul> -->
 
-        <ul class="navbar-nav px-5 mr-end">
+<!-- search box ends -->
+
+        <ul class="navbar-nav px-3 mr-end" style="font-size: 1.1rem;">
           
           {%if request.user.is_authenticated%}
           <li class="nav-item "><a class="nav-link  d-flex" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#!">
-            <img class=" rounded-circle mt-1"   style="width: 2rem; height: 2rem; background-color: white;" src="/media/user-icon.png" alt="Card image cap">
+            <img class=" rounded-circle mt-1"   style="width: 2rem; height: 2rem; " src="/media/usericon.png" alt="Card image cap">
             <div class="nav-link" style="color: #f5f7fa;">{{user.first_name}} {{user.last_name}}</div>
             <li class="nav-link"><a  class="nav-link" href="{%url 'logout'%}">Logout</a></li>
             <!-- <span class="bg-info rounded-circle" >
@@ -125,14 +147,46 @@
             <li class="nav-link"><a  class="nav-link" href="{%url 'login'%}">Login</a></li>
             <li class="nav-link"><a  class="nav-link" href="{%url 'register'%}">Register</a></li>
             {%endif%}
+            <!-- <li class="nav-link"><a  class="nav-link" href="">            <span class="form-control-feedback"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-search" viewBox="0 0 15 15">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg></span></a></li> -->
+
         </ul>
+<!-- search try -->
+<ul class="navbar-nav  " >
+          <form class="form-inline my-2 my-lg-0">
+            <div class="form-group has-search" >
+              <span class="form-control-feedback"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-search" viewBox="0 0 15 15">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+              </svg></span>
+              <input type="text" class="form-control" style="
+              border-radius: 30px; width: 7vw; " placeholder="Search">
+            </div>
+          
+          </form>
+        </ul>
+        
+<!-- search try end -->
       </div>
     </nav>
     {% include 'alert.html' %}
 
+
+<div class="row justify-content-between w-100">
+  <div class="col-lg-3 ml-5" style="/* margin: auto auto; */"><img src="/media/echo-image.png" style="height: 20vh; margin: auto 0" alt=""></div>
+    <div class="col-lg-3 mt-5" style="/* margin: auto auto; */">
+      <h1 class="container text-center mb-4 p-0" style="color: green; letter-spacing: 1.5px; font-weight: bolder; font-size: 2rem;">
+        
+        {%block heading%} {%endblock%}
+        </h1>
+  </div>
+
+    <div class="col-lg-3 mt-5 px-4" style="/* margin: auto 13px; */"><img src="/media/Acro-black.png" style="height: 8vh; " alt=""></div>
+</div>
+
     {% block start %} {% endblock %}
 
-    <footer class=" text-center text-lg-start" style="background-color: black;">
+    <footer class=" text-center text-lg-start" style="background-color: #1f6139">
       <!-- Copyright -->
       <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05); color: #f5f7fa;">
         © 2024 Copyright:
