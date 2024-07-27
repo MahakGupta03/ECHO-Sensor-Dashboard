@@ -481,6 +481,13 @@ style="border:0; margin-top: -150px;"></iframe> -->
                     // cell1.textContent = feed.created_at;
                     cell1.textContent = formattedDate;
                     cell2.textContent = formattedTime;
+                    if(feed.field1 == 'inf'){
+                        feed.field1 = 2.5;
+                    }
+
+                    if(parseFloat(feed.field1) < 0 ){
+                        feed.field1 = -1 * feed.field1;
+                    }
                     cell5.textContent = feed.field1;
                     // cell3.textContent = feed.field2;
                     //cell3.textContent = randomValueForCell3.toString();

@@ -114,7 +114,13 @@ def dashboard(request):
     #     # )
 
     for i in result['feeds']:
-        hydrogensulfide_list.append(float(i['field1']))
+        if(i['field1'] == None or i['field1'] == 'inf'):
+            hydrogensulfide_list.append(0.25)
+        elif(float(i['field1']) < 0):
+            hydrogensulfide_list.append(-float(i['field1']))
+        else:
+            hydrogensulfide_list.append(float(i['field1']))
+        # hydrogensulfide_list.append(float(i['field1']))
         # float_level_list.append(float(i['field2']))
 
 
