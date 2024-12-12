@@ -74,7 +74,7 @@ def user_login(request):
             if u[0].type == 'Supervisor':
                 return redirect('supervisor-dashboard')
             if u[0].type == 'City Head':
-                return redirect('dashboard')
+                return redirect('city-plan')
             if u[0].type == 'Worker':
                 return redirect('worker-dashboard')
             return redirect('home')
@@ -91,10 +91,13 @@ def user_logout(request):
 
 
 def dashboard(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "Login required")
+        return render(request,'login.html')
     if request.user.profile.type == "Worker":
         return redirect('worker-dashboard')
     if request.user.profile.type == "City Head":
-        return redirect('cityhead-dashboard')
+        return redirect('city-plan')
         
     email = 'yashhguptaa.917@gmail.com'
 
@@ -264,7 +267,9 @@ def assign_task_to_worker(request, worker_id):
         )
 
         # Redirect to a success page or render a template
-        return render(request, 'home.html')
+        messages.success(request, "Task assigned successfully.")
+        return render(request, 'supevisordashboard.html')
+        # return redirect("worker-dashboard")
 
     return render(request, 'assigntaskform.html', {'worker': worker_profile})
 

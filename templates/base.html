@@ -88,6 +88,7 @@
         <!-- <img src="/media/Picture1.png"  style="height: 50px; " alt=""><div style="color: white;">Ecovators</div> -->
         <ul class="navbar-nav px-3 mr-auto " style="font-size: 1.1rem;">
           <li class="nav-item active " >
+            
             {%if request.user.is_authenticated%}
             {%if request.user.profile.type == "Supervisor"%}
             <a class="nav-link" href="{% url 'supervisor-dashboard' %}"
@@ -100,7 +101,7 @@
             >
             {%endif%}
             {%if request.user.profile.type == "City Head"%}
-            <a class="nav-link" href="{% url 'City Head' %}"
+            <a class="nav-link" href="{% url 'city-plan' %}"
               >Home <span class="sr-only">(current)</span></a
             >
             {%endif%}
