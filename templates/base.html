@@ -83,14 +83,28 @@
 
       <div class="collapse navbar-collapse mx-4 " id="navbarSupportedContent" >
         <!-- <img src="/media/wwf-logo-white.png"  style="height: 50px; " alt=""> -->
-        <!-- <img src="/media/wwf-logo.png"  style="height: 60px;" alt=""> -->
-        <img src="/media/wwf.jpg "  style="height: 60px;" alt="">
+        <img src="/media/Ecovators Logo.png"  style="height: 44px;" alt="">
+        <!-- <img src="/media/wwf.jpg "  style="height: 60px;" alt=""> -->
         <!-- <img src="/media/Picture1.png"  style="height: 50px; " alt=""><div style="color: white;">Ecovators</div> -->
         <ul class="navbar-nav px-3 mr-auto " style="font-size: 1.1rem;">
           <li class="nav-item active " >
-            <a class="nav-link" href="{% url 'home' %}"
+            {%if request.user.is_authenticated%}
+            {%if request.user.profile.type == "Supervisor"%}
+            <a class="nav-link" href="{% url 'supervisor-dashboard' %}"
               >Home <span class="sr-only">(current)</span></a
             >
+            {%endif%}
+            {%if request.user.profile.type == "Worker"%}
+            <a class="nav-link" href="{% url 'worker-dashboard' %}"
+              >Home <span class="sr-only">(current)</span></a
+            >
+            {%endif%}
+            {%if request.user.profile.type == "City Head"%}
+            <a class="nav-link" href="{% url 'City Head' %}"
+              >Home <span class="sr-only">(current)</span></a
+            >
+            {%endif%}
+            {%endif%}
           </li>
           <li class="nav-item " >
             <a class="nav-link"  href="{% url 'dashboard' %}"
@@ -173,7 +187,7 @@
 
 
 <div class="row justify-content-between w-100">
-  <div class="col-lg-3 ml-5" style="/* margin: auto auto; */"><img src="/media/echo-image.png" style="height: 20vh; margin: auto 0" alt=""></div>
+  <div class="col-lg-3 ml-5" style="/* margin: auto auto; */"><img src="/media/SIH bgn.png" style="height: 20vh; margin: auto 0" alt=""></div>
     <div class="col-lg-3 mt-5" style="/* margin: auto auto; */">
       <h1 class="container text-center mb-4 p-0" style="color: green; letter-spacing: 1.5px; font-weight: bolder; font-size: 2rem;">
         
@@ -190,7 +204,7 @@
       <!-- Copyright -->
       <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05); color: #f5f7fa;">
         © 2024 Copyright:
-        <a class="text-body" href="https://mdbootstrap.com/">WWF.com</a>
+        <a class="text-body" href="https://mdbootstrap.com/">Ecovators.com</a>
       </div>
       <!-- Copyright -->
     </footer>

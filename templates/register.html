@@ -183,7 +183,21 @@
                             <div class="form-group">
                                 <input class="form-control px-2" type="number" name="ward" placeholder="Ward *" value="">
                             </div>
+                            
                         </div>
+                        <div class="col-md-12">
+                        <div class="form-group" id="service-type" >
+                            {% csrf_token %}
+                            <!-- <label for="category">Category</label> -->
+                            <select class="form-control px-2" name="user-type" >
+                                <option disabled selected>Select User Type*</option>
+                                <option value="City Head">City Head</option>
+                                <option value="Supervisor">Supervisor</option>
+                                <option value="Worker">Worker</option>
+                                
+                            </select>
+                        </div>
+                    </div>
                     </div>
                     <button class="btn signin mt-3">Register</button>
                     <!-- <span class="forgot-pass"><a href="#">Lost password?</a></span> -->

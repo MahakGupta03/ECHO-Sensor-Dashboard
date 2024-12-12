@@ -2,12 +2,14 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 import requests
-from .models import Profile  # import the Profile model
+from .models import Profile, Task, Completed_Task # import the Profile model
 from emails.models import Gases
 import time
+from django.core.files.storage import FileSystemStorage
+
 
 # Create your views here.
 def register(request):
@@ -24,8 +26,10 @@ def register(request):
         ward = request.POST.get('ward')
         # pin = request.POST.get('pin')
         # print(request.POST)
+        user_type = request.POST.get('user-type')
         user_obj = User.objects.filter(username = email)
         print("usser object")
+        print(user_type)
         print(user_obj)
         if user_obj.exists():
             messages.warning(request, "User already exists..")
@@ -34,7 +38,7 @@ def register(request):
         user_obj.set_password(password)
         user_obj.save()
 
-        profile_obj = Profile.objects.create(user=user_obj, phone=phone, state=state, city=city, ward=ward)
+        profile_obj = Profile.objects.create(user=user_obj, phone=phone, state=state, city=city, ward=ward, type = user_type)
         profile_obj.save()
         # print(user_obj.get_full_name())
         print("User created successfully..")
@@ -55,7 +59,7 @@ def user_login(request):
             return HttpResponseRedirect(request.path_info)
         
         u = Profile.objects.filter(user = user_obj[0])
-        print(u[0].ward)
+        print(u[0].type)
 
         user_obj = authenticate(request, username = email, password = password)
 
@@ -67,6 +71,12 @@ def user_login(request):
             # return redirect('dashboard')
 
             # return render(request,'dashboard.html', {'user':user_obj, 'profile':u[0]})
+            if u[0].type == 'Supervisor':
+                return redirect('supervisor-dashboard')
+            if u[0].type == 'City Head':
+                return redirect('dashboard')
+            if u[0].type == 'Worker':
+                return redirect('worker-dashboard')
             return redirect('home')
         
         messages.warning(request, "Invalid credentials..")
@@ -81,6 +91,11 @@ def user_logout(request):
 
 
 def dashboard(request):
+    if request.user.profile.type == "Worker":
+        return redirect('worker-dashboard')
+    if request.user.profile.type == "City Head":
+        return redirect('cityhead-dashboard')
+        
     email = 'yashhguptaa.917@gmail.com'
 
     all_data = Gases.objects.all()
@@ -157,15 +172,132 @@ def zone_list(request):
     # users = User.objects.all()
     return render(request,"zonelist.html")
 
-def admin_dashboard(request):
+def supervisor_dashboard(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "Login required")
+        return render(request,'login.html')
+    
+    print("Supervisor")
+
+    if request.method == 'POST':
+        task_id = request.POST.get('task_id')
+        # print(task_id)
+        task_description = request.POST.get('task_description')
+        task_zone = request.POST.get('task_zone')
+        task_location = request.POST.get('task_location')
+        task_end_date = request.POST.get('task_end_date')
+        task_end_time = request.POST.get('task_end_time')
+
+        task_obj = Task.objects.create(task_id=task_id, task_description=task_description, task_zone=task_zone, task_location=task_location, task_end_date=task_end_date, task_end_time=task_end_time)
+        # task_obj.save()
+        print(task_obj)
+        # return render(request,"supervisordashboard.html")
+
+    users = User.objects.all()
+    completed_tasks = Task.objects.all()
+    
+    # users = Profile.objects.all()
+    
+    # users =  Profile.objects.filter(type = 'Worker')
+    return render(request,"supervisordashboard.html", {'users':users, 'completed_tasks':completed_tasks})
+    # messages.warning(request, "You are not a supervisor")
+    # return render(request,'login.html')
+        
+
+def worker_dashboard(request):
     if not request.user.is_authenticated:
         messages.warning(request, "Login required")
         return render(request,'login.html')
     users = User.objects.all()
-    return render(request,"admindashboard.html", {'users':users})
+    tasks = Task.objects.all()
+    return render(request,"workerdashboard.html", {'tasks':tasks})
 
 def show_city_plan(request):
     if not request.user.is_authenticated:
         messages.warning(request, "Login required")
         return render(request,'login.html')
     return render(request,"cityplan.html")
+
+# def service_request(request):
+#     if request.method == 'POST':
+#         task_id = request.POST.get('task_id')
+#         # print(task_id)
+#         task_description = request.POST.get('task_description')
+#         task_zone = request.POST.get('task_zone')
+#         task_location = request.POST.get('task_location')
+#         task_end_date = request.POST.get('task_end_date')
+#         task_end_time = request.POST.get('task_end_time')
+
+#         task_obj = Task.objects.create(task_id=task_id, task_description=task_description, task_zone=task_zone, task_location=task_location, task_end_date=task_end_date, task_end_time=task_end_time)
+#         task_obj.save()
+#         print(task_obj)
+#         messages.warning(request, "Request sent successfully..")
+#         return render(request,"supervisordashboard.html")
+
+def assign_task_to_worker(request, worker_id):
+    # if not request.user.is_authenticated:
+    #     messages.warning(request, "Login required")
+    #     return render(request, 'login.html')
+
+    # Get the worker's profile
+    
+    worker_profile = User.objects.get(id=worker_id)
+    profile = Profile.objects.get(user=worker_profile)
+
+    print(profile)
+
+    if request.method == 'POST':
+        task_description = request.POST.get('task_description')
+        task_zone = request.POST.get('task_zone')
+        task_location = request.POST.get('task_location')
+        task_end_date = request.POST.get('task_end_date')
+        task_end_time = request.POST.get('task_end_time')
+        
+        # Create a new task and assign it to the worker
+        task = Task.objects.create(
+            worker=profile,
+            task_description=task_description,
+            task_zone=task_zone,
+            task_location=task_location,
+            task_end_date=task_end_date,
+            task_end_time=task_end_time
+        )
+
+        # Redirect to a success page or render a template
+        return render(request, 'home.html')
+
+    return render(request, 'assigntaskform.html', {'worker': worker_profile})
+
+
+    
+# def service_done(request):
+#     if request.method == 'POST':
+#         task_id = request.POST.get('task_id')
+#         task_obj = Task.objects.filter(task_id=task_id)
+#         task_obj.is_completed = True
+#         task_obj.save()
+#         print(task_obj)
+#         return render(request,"workerdashboard.html")
+#     return render(request,"workerdashboard.html")
+
+
+def mark_task_as_completed(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "Login required")
+        return redirect('login')
+
+    # Get the task object
+    task_id = request.POST.get('task_id')
+    solution_photo = request.FILES.get('solution_photo')
+    task = Task.objects.get(id=task_id)
+
+    # fss = FileSystemStorage()
+    # file = fss.save(solution_photo.name, solution_photo)
+    # profile_url = fss.url(file)
+    task.solution_photo = solution_photo
+    # Mark the task as completed
+    task.mark_as_completed()
+
+    # Redirect to a success page or render a template
+    messages.success(request, "Task marked as completed.")
+    return render(request, 'home.html')  # Redirect to the supervisor dashboard or another appropriate page
